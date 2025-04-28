@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated Nov 5, 2023, 12:41:26 PM by Hibernate Tools 6.1.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="yummy_hub" name="th.ac.ku.kps.eng.cpe.model.Districts" optimistic-lock="none" table="districts">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="th.ac.ku.kps.eng.cpe.model.Provinces" fetch="select" name="provinces">
+            <column name="province_id" not-null="true"/>
+        </many-to-one>
+        <property name="code" type="int">
+            <column name="code" not-null="true" unique="true"/>
+        </property>
+        <property name="nameInThai" type="string">
+            <column length="150" name="name_in_thai" not-null="true"/>
+        </property>
+        <property name="nameInEnglish" type="string">
+            <column length="150" name="name_in_english" not-null="true"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="stores" table="store">
+            <key>
+                <column name="district_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Store"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="subdistrictses" table="subdistricts">
+            <key>
+                <column name="district_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Subdistricts"/>
+        </set>
+    </class>
+</hibernate-mapping>

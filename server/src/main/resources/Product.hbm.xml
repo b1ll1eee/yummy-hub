@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated Nov 5, 2023, 12:41:26 PM by Hibernate Tools 6.1.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="yummy_hub" name="th.ac.ku.kps.eng.cpe.model.Product" optimistic-lock="none" table="product">
+        <id name="productId" type="string">
+            <column length="200" name="product_id"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="th.ac.ku.kps.eng.cpe.model.Store" fetch="select" name="store">
+            <column length="200" name="store_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="th.ac.ku.kps.eng.cpe.model.Type" fetch="select" name="type">
+            <column name="type_id" not-null="true"/>
+        </many-to-one>
+        <property name="name" type="string">
+            <column length="100" name="name" not-null="true"/>
+        </property>
+        <property name="description" type="string">
+            <column length="65535" name="description"/>
+        </property>
+        <property name="expiryDate" type="timestamp">
+            <column length="19" name="expiry_date" not-null="true"/>
+        </property>
+        <property name="price" type="big_decimal">
+            <column name="price" not-null="true" precision="11" scale="2"/>
+        </property>
+        <property name="discountPrice" type="big_decimal">
+            <column name="discount_price" precision="11" scale="2"/>
+        </property>
+        <property name="quantityAvailable" type="int">
+            <column name="quantity_available" not-null="true"/>
+        </property>
+        <property name="imgProduct" type="string">
+            <column length="65535" name="img_product" not-null="true"/>
+        </property>
+        <property name="isactive" type="boolean">
+            <column name="isactive" not-null="true"/>
+        </property>
+        <property name="createdate" type="timestamp">
+            <column length="19" name="createdate" not-null="true"/>
+        </property>
+        <property name="updatedate" type="timestamp">
+            <column length="19" name="updatedate"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="orderitems" table="orderitem">
+            <key>
+                <column length="200" name="product_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Orderitem"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated Nov 5, 2023, 12:41:26 PM by Hibernate Tools 6.1.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="yummy_hub" name="th.ac.ku.kps.eng.cpe.model.Subdistricts" optimistic-lock="none" table="subdistricts">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="th.ac.ku.kps.eng.cpe.model.Districts" fetch="select" name="districts">
+            <column name="district_id" not-null="true"/>
+        </many-to-one>
+        <property name="code" type="int">
+            <column name="code" not-null="true" unique="true"/>
+        </property>
+        <property name="nameInThai" type="string">
+            <column length="150" name="name_in_thai" not-null="true"/>
+        </property>
+        <property name="nameInEnglish" type="string">
+            <column length="150" name="name_in_english"/>
+        </property>
+        <property name="latitude" type="big_decimal">
+            <column name="latitude" not-null="true" precision="6" scale="3"/>
+        </property>
+        <property name="longitude" type="big_decimal">
+            <column name="longitude" not-null="true" precision="6" scale="3"/>
+        </property>
+        <property name="zipCode" type="java.lang.Integer">
+            <column name="zip_code"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="stores" table="store">
+            <key>
+                <column name="subdistrict_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Store"/>
+        </set>
+    </class>
+</hibernate-mapping>

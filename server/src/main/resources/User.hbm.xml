@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated Nov 5, 2023, 12:41:26 PM by Hibernate Tools 6.1.7.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="yummy_hub" name="th.ac.ku.kps.eng.cpe.model.User" optimistic-lock="none" table="user">
+        <id name="userId" type="string">
+            <column length="1000" name="user_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="firstname" type="string">
+            <column length="1000" name="firstname" not-null="true"/>
+        </property>
+        <property name="lastname" type="string">
+            <column length="1000" name="lastname" not-null="true"/>
+        </property>
+        <property name="password" type="string">
+            <column length="1000" name="password" not-null="true"/>
+        </property>
+        <property name="salt" type="string">
+            <column length="1000" name="salt" not-null="true"/>
+        </property>
+        <property name="role" type="string">
+            <column length="13" name="role" not-null="true"/>
+        </property>
+        <property name="lastLoginTimestamp" type="timestamp">
+            <column length="19" name="last_login_timestamp"/>
+        </property>
+        <property name="accountLockStatus" type="java.lang.Boolean">
+            <column name="account_lock_status"/>
+        </property>
+        <property name="attemptLogin" type="java.lang.Integer">
+            <column name="attempt_login"/>
+        </property>
+        <property name="attemptTimeLogin" type="timestamp">
+            <column length="19" name="attempt_time_login"/>
+        </property>
+        <property name="twoFactorAuthenticationEnabled" type="java.lang.Boolean">
+            <column name="two_factor_authentication_enabled"/>
+        </property>
+        <property name="codeTwoFactorAuthentication" type="string">
+            <column length="1000" name="code_two_factor_authentication"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="orderses" table="orders">
+            <key>
+                <column length="200" name="user_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Orders"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="favourites" table="favourite">
+            <key>
+                <column length="200" name="user_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Favourite"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="true" name="stores" table="store">
+            <key>
+                <column length="200" name="user_id" not-null="true"/>
+            </key>
+            <one-to-many class="th.ac.ku.kps.eng.cpe.model.Store"/>
+        </set>
+    </class>
+</hibernate-mapping>
