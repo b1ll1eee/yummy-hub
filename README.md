@@ -22,8 +22,8 @@ Stack: React 18 + TypeScript, Redux Toolkit / RTK Query, Tailwind CSS, Spring Bo
 
 ```mermaid
 flowchart LR
-  B[Browser<br/>React + RTK Query<br/>:3000] -->|AES-encrypted credentials| A[/POST /api/login/]
-  A --> T[/POST /api/login/totp/]
+  B[Browser<br/>React + RTK Query<br/>:3000] -->|AES-encrypted credentials| A["POST /api/login"]
+  A --> T["POST /api/login/totp"]
   T -->|JWT HS256, 1h| B
   B -->|Authorization: Bearer| F[JwtAuthorizationFilter]
   F --> C[Spring MVC controllers<br/>:8080 /api/**]
@@ -31,8 +31,8 @@ flowchart LR
   C --> J[Hibernate / JPA<br/>parameterised JPQL]
   J --> M[(MySQL yummy_hub)]
   C --> P[PromptPay + ZXing<br/>QR generation]
-  C --> U[Local disk<br/>C:\image\Files-Upload]
-  B -.->|webpack require()| U
+  C --> U["Local disk<br/>C:/image/Files-Upload"]
+  B -.->|webpack bundles images| U
 ```
 
 The client sends username and password AES-encrypted with `REACT_APP_API_SECRET_KEY`; the server decrypts them with `secret.frontkey`, verifies the salted SHA-256 hash (pepper from `secret.pepper`) and, on success, the client prompts for a TOTP code and calls `/login/totp`, which returns a one-hour HS256 JWT carrying `username`, `firstname`, `lastname` and `role`. The JWT is stored in a cookie and attached as `Authorization: Bearer` by every RTK Query API slice. `SecurityConfig` requires authentication for `/api/auth/**` and leaves the rest of `/api/**` public; `JwtAuthorizationFilter` validates the token and populates the security context. Role-based access is enforced per endpoint inside the controllers by comparing `user.getRole()` against `customer`, `store owner` or `administrator`. All database access goes through Spring Data repositories with named-parameter JPQL `@Query`s, so there is no string-built SQL. Personal fields (`user_id`, `firstname`, `lastname`) are stored AES-encrypted with `secret.backkey`; four wrong passwords or codes lock the account for one hour.
